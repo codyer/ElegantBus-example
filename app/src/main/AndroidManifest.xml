@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.bus">
+
+    <application
+        android:name=".BusApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="${APP_NAME}"
+        android:process=":process_app"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Main4Activity"
+            android:process=":process3" />
+        <activity
+            android:name=".Main3Activity"
+            android:process=":process3" />
+        <activity
+            android:name=".Main2Activity"
+            android:process=":process2" />
+        <activity
+            android:name=".Main1Activity"
+            android:process=":process1">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

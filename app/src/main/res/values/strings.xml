@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">IPC</string>
+    <string name="open">打开新页面</string>
+    <string name="send_integer">发送 Integer 事件(跨进程未打开)</string>
+    <string name="send_string">发送 String 事件</string>
+    <string name="send_bean">发送 Bean 事件</string>
+</resources>

@@ -22,6 +22,7 @@ allprojects {
         maven {
             url LOCAL_REPOSITORY
         }
+        maven { url 'https://jitpack.io' }
         google()
         jcenter()
         

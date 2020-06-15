@@ -3,9 +3,8 @@ package com.example.bus;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.cody.component.bus.wrapper.ObserverWrapper;
-
 import androidx.appcompat.app.AppCompatActivity;
+import cody.bus.ObserverWrapper;
 
 
 public class Main2Activity extends AppCompatActivity {
@@ -23,9 +22,9 @@ public class Main2Activity extends AppCompatActivity {
         findViewById(R.id.testInt).setOnClickListener(view -> TestUtil.postInt());
         findViewById(R.id.testString).setOnClickListener(view -> TestUtil.postString());
         findViewById(R.id.testBean).setOnClickListener(view -> TestUtil.postBean());
-        observerWrapperInt = TestUtil.testInt(this);
-        observerWrapperString = TestUtil.testString(this);
-        observerWrapperBean = TestUtil.testBean(this);
+        observerWrapperInt = TestUtil.testInt(this, "页面2");
+        observerWrapperString = TestUtil.testString(this, "页面2");
+        observerWrapperBean = TestUtil.testBean(this, "页面2");
     }
 
     @Override

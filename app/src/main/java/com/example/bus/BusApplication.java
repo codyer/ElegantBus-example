@@ -2,19 +2,20 @@ package com.example.bus;
 
 import android.app.Application;
 
-import com.cody.component.bus.LiveEventBus;
+import cody.bus.ElegantBusX;
+
 
 public class BusApplication extends Application {
-    
+
     @Override
     public void onCreate() {
         super.onCreate();
-        LiveEventBus.supportMultiProcess(this,"com.example.bus");
+        ElegantBusX.supportMultiAppMultiProcess(this, "com.example.bus");
     }
 
     @Override
     public void onTerminate() {
-        LiveEventBus.stopSupportMultiProcess();
+        ElegantBusX.stopSupportMultiProcess();
         super.onTerminate();
     }
 }

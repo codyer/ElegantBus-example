@@ -1,12 +1,20 @@
 package com.example.bus;
 
-import com.cody.component.bus.lib.annotation.Event;
-import com.cody.component.bus.lib.annotation.EventScope;
 
-@EventScope(value = "TestScope2", active = false)
-public enum EventDefine2 {
-    @Event(value = "event1", data = Integer.class, process = false) eventInt,
-    @Event(value = "event1", data = String.class, process = true) eventString,
-    @Event(value = "event2", data = String.class, process = true) eventString2,
-    @Event(value = "event2", data = JavaBean.class, process = true) eventBean,
+import cody.bus.annotation.Event;
+import cody.bus.annotation.EventGroup;
+
+@EventGroup(value = "TestScope2", active = true)
+public class EventDefine2 {
+    @Event(value = "eventInt 事件测试", multiProcess = false)
+    Integer eventInt;
+
+    @Event(value = "eventString 事件测试", multiProcess = true)
+    String eventString;
+
+    @Event(value = "eventString 事件测试", multiProcess = true)
+    String eventString2;
+
+    @Event(value = "eventBean 事件测试", multiProcess = true)
+    JavaBean eventBean;
 }

@@ -2,10 +2,11 @@ apply plugin: 'com.android.application'
 
 // 本地调试
 def isLocal = false
+def localVersion = "1.3.2"
+def version = "1.3.0"
 
 android {
     compileSdkVersion 29
-
 
     defaultConfig {
         applicationId "com.example.bus"
@@ -46,6 +47,13 @@ android {
                     APP_NAME: "IPC-2"
             ]
         }
+        app3 {
+            initWith(debug)
+            applicationIdSuffix ".app3"
+            manifestPlaceholders = [
+                    APP_NAME: "IPC-3"
+            ]
+        }
     }
 
     compileOptions {
@@ -63,10 +71,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     if (isLocal) {
-        implementation "com.cody.component.local:bus-core:1.0.72"
-        annotationProcessor "com.cody.component.local:bus-compiler:1.0.72"
+        implementation "com.cody.local.bus:bus-ipc:$localVersion"
+//        implementation "com.cody.local.bus:bus-core:$localVersion"
+        annotationProcessor "com.cody.local.bus:bus-compiler:$localVersion"
     } else {
-        implementation "com.github.codyer.component:bus-core:1.0.72"
-        annotationProcessor "com.github.codyer.component:bus-compiler:1.0.72"
+//        implementation "com.github.codyer.ElegantBus:core:$version"
+        implementation "com.github.codyer.ElegantBus:ipc:$version"
+        annotationProcessor "com.github.codyer.ElegantBus:compiler:$version"
     }
 }

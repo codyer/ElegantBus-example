@@ -1,11 +1,30 @@
 apply plugin: 'com.android.application'
 
 // 本地调试
-def isLocal = true
-def localVersion = "1.4.7"
-def version = "1.4.1"
+def isLocal = false
+def localVersion = "2.0.0"
+def version = "2.0.0"
 
 android {
+
+    // 签名配置
+    signingConfigs {
+        kestore1 {
+            keyAlias 'alias'
+            keyPassword 'password'
+            storeFile file('kestore.jks')
+            storePassword 'password'
+            v2SigningEnabled true
+        }
+        kestore2 {
+            keyAlias 'alias'
+            keyPassword 'password'
+            storeFile file('kestore-2.jks')
+            storePassword 'password'
+            v2SigningEnabled true
+        }
+    }
+
     compileSdkVersion 29
 
     defaultConfig {
@@ -14,44 +33,80 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+// 读取设置的签名文件
+        signingConfig signingConfigs.kestore1
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                APP_NAME               : "IPC-default",
+                BUS_SUPPORT_MULTI_APP  : true,
+                BUS_MAIN_APPLICATION_ID: "com.example.bus"
+        ]
     }
 
     buildTypes {
         debug {
             minifyEnabled false
+            // 读取设置的签名文件
+            signingConfig signingConfigs.kestore1
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [
-                    APP_NAME: "IPC-debug"
+                    APP_NAME               : "IPC-debug-true",
+                    BUS_SUPPORT_MULTI_APP  : true,
+                    BUS_MAIN_APPLICATION_ID: "com.example.bus"
             ]
         }
         release {
-            minifyEnabled false
+            // 启用资源压缩 因为您可能需要编辑 proguard-rules.pro 文件以保留动态创建或调用的类或方法，然后再开始移除资源
+            shrinkResources true
+            // 开启代码压缩
+            minifyEnabled true
+            // 对齐
+            zipAlignEnabled true
+            // 读取设置的签名文件
+            signingConfig signingConfigs.kestore2
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [
-                    APP_NAME: "IPC-release"
+                    APP_NAME               : "IPC-release-false",
+                    BUS_SUPPORT_MULTI_APP  : false,
+                    BUS_MAIN_APPLICATION_ID: "com.example.bus"
             ]
         }
         app1 {
             initWith(debug)
             applicationIdSuffix ".app1"
             manifestPlaceholders = [
-                    APP_NAME: "IPC-1"
+                    APP_NAME               : "IPC-1-true",
+                    BUS_SUPPORT_MULTI_APP  : true,
+                    BUS_MAIN_APPLICATION_ID: "com.example.bus"
             ]
         }
         app2 {
             initWith(debug)
             applicationIdSuffix ".app2"
             manifestPlaceholders = [
-                    APP_NAME: "IPC-2"
+                    APP_NAME               : "IPC-2-false",
+                    BUS_SUPPORT_MULTI_APP  : false,
+                    BUS_MAIN_APPLICATION_ID: "com.example.bus"
             ]
         }
         app3 {
             initWith(debug)
             applicationIdSuffix ".app3"
+            // 读取设置的签名文件
+            signingConfig signingConfigs.kestore2
             manifestPlaceholders = [
-                    APP_NAME: "IPC-3"
+                    APP_NAME               : "IPC-3-id-true",
+                    BUS_SUPPORT_MULTI_APP  : true,
+                    BUS_MAIN_APPLICATION_ID: "com.example.bus"
+            ]
+        }
+        app4 {
+            initWith(debug)
+            applicationIdSuffix ".app4"
+            manifestPlaceholders = [
+                    APP_NAME               : "IPC-4-id-abc",
+                    BUS_SUPPORT_MULTI_APP  : true,
+                    BUS_MAIN_APPLICATION_ID: "com.example.bus.abc"
             ]
         }
     }
@@ -64,22 +119,17 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
     if (isLocal) {
-//        implementation "com.cody.local.bus:bus-ipc-aidl:$localVersion"
-        implementation "com.cody.local.bus:bus-ipc-messenger:$localVersion"
-//        implementation "com.cody.local.bus:bus-core:$localVersion"
-        annotationProcessor "com.cody.local.bus:bus-compiler:$localVersion"
+//        implementation "com.cody.local.bus:bus-core:$localVersion"// 不需要跨进程时使用
+//        implementation "com.cody.local.bus:bus-ipc-aidl:$localVersion" // 跨进程使用
+        implementation "com.cody.local.bus:bus-ipc-messenger:$localVersion" // 跨进程使用
+        annotationProcessor "com.cody.local.bus:bus-compiler:$localVersion" // 需要事件自动管理使用
     } else {
-//        implementation "com.github.codyer.ElegantBus:core:$version"
-//        implementation "com.github.codyer.ElegantBus:ipc:$version"
-        implementation "com.github.codyer.ElegantBus:ipc-aidl:$version"
-//        implementation "com.github.codyer.ElegantBus:ipc-messenger:$version"
-        annotationProcessor "com.github.codyer.ElegantBus:compiler:$version"
+//        implementation "com.github.codyer.ElegantBus:core:$version" // 不需要跨进程时使用
+//        implementation "com.github.codyer.ElegantBus:ipc-aidl:$version" // 跨进程使用
+        implementation "com.github.codyer.ElegantBus:ipc-messenger:$version" // 跨进程使用
+        annotationProcessor "com.github.codyer.ElegantBus:compiler:$version"// 需要事件自动管理使用
     }
 }

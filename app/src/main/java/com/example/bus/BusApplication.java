@@ -12,8 +12,7 @@ public class BusApplication extends Application {
     public void onCreate() {
         super.onCreate();
         ElegantBus.setDebug(true);
-//        ElegantBusX.supportMultiAppMultiProcess(this, "com.example.bus");
-        ElegantBusX.supportSingleAppMultiProcess(this);
+        ElegantBusX.supportMultiProcess(this);
     }
 
     @Override

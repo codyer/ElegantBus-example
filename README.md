@@ -1,14 +1,72 @@
 # ElegantBus-IPC-Example
 [![](https://jitpack.io/v/codyer/ElegantBus.svg)](https://jitpack.io/#codyer/ElegantBus)
 
+ElegantBus 是一款 Android 平台，基于LivaData的消息总线框架，这是一款非常 **优雅** 的消息总线框架。
+
 此工程为测试 ElegantBus 的示例代码。
 为了进行更全面的测试，以及更好的使用示例说明，特意开了此项目。
 
-如果对 Elegant 的实现过程，以及考虑点感兴趣的可以看看下文前几节[自吹](#自吹)
+如果对 ElegantBus 的实现过程，以及考虑点感兴趣的可以去看看源代码，[传送门](https://github.com/codyer/ElegantBus)
 
-如果只是想先使用的，可以跳过，直接到跳到[使用说明](#使用说明)
 
-## 来龙去脉
+为了 ElegantBus 更好的为大家提供服务，更好的兼容性，我特意做了很多场景的测试，可能会有覆盖不到的，如果遇到问题，欢迎留言评论
+
+#### 测试场景分析
+
+##### 按照事件类型划分，预期结果:
+```
+事件类型:{
+     Normal:{
+        注册时:之前的事件不会接收到,
+        注册之后:{
+            激活:立即收到,
+            非激活:变成激活后收到
+        }
+     },
+     Sticky:{
+        注册时:会接收到最后一次事件,
+        注册之后:{
+            激活:立即收到,
+            非激活:变成激活后收到
+        }
+     },
+     Forever:{
+        注册时:之前的事件不会接收到,
+        注册之后:立即收到
+     }
+}
+```
+##### 不同场景预期结果：
+```
+场景覆盖:{
+    单一进程:{
+        不需要引入IPC包，直接按事件类型测试OK,
+    },
+    多进程:{// 导入IPC包，APK1、APK2
+        单一App:{
+           设置（isMultiApp = false）:直接按事件类型测试OK,
+        },
+        多App:{
+             同一个包服务下:{
+                 同时打开跨App支持:{
+                     按事件类型测试OK
+                 },
+                 只有一方打开:{
+                     本App内正常，跨App无法执行
+                 },
+             },
+             非一个包服务下:不会接收到
+         }
+    }
+}
+```
+
+#### LifeCycle 参考图：
+
+![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gfxmophq4dj315r0g7jt7.jpg)
+
+
+## ElegantBus来龙去脉
 ### 自吹
 ElegantBus 是一款 Android 平台，基于LivaData的消息总线框架，这是一款非常 **优雅** 的消息总线框架。
 
@@ -87,227 +145,5 @@ LiveEventBus | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x
 ElegantBus | :x: | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark:  | :white_check_mark: | :white_check_mark: 
 
 
-## 使用说明
-### （一）ElegantBus 接入配置
-
-#### 1、项目级别gradle添加依赖 目前使用的是 jitpack
-```
-allprojects {
-    repositories {
-    ...
-    maven { url 'https://jitpack.io' }
-}
-}
-```
-
-#### 2、在应用 gradle 文件中添加 ElegantBus 最新版本依赖
-[![](https://jitpack.io/v/codyer/ElegantBus.svg)](https://jitpack.io/#codyer/ElegantBus)
-
-```
-def version = "2.0.0"
-dependencies {
-    implementation "com.github.codyer.ElegantBus:core:$version" // 不需要跨进程时使用
-//  implementation "com.github.codyer.ElegantBus:ipc-aidl:$version" // 跨进程时使用（方式1：aidl 实现，已经包含 core）
-//  implementation "com.github.codyer.ElegantBus:ipc-messenger:$version" // 跨进程时使用（方式2：messenger 实现，已经包含 core）
-//	annotationProcessor "com.github.codyer.ElegantBus:compiler:$version"// 需要事件自动管理时使用
-}
-```
-##### 如果不需要跨进程，以上两步配置就可以了，如果需要跨进程，第二步选择一个跨进程的方式，并添加第三步配置，且设置第四步。
-
-#### 3、在应用 gradle 文件中的 manifestPlaceholders 配置是否支持跨 App，以及主 App 的 applicationId
-```
-manifestPlaceholders = [
-    BUS_SUPPORT_MULTI_APP  : true,// 是否支持跨App
-    BUS_MAIN_APPLICATION_ID: "com.example.bus" // 肯定会被安装的主app的applicationId
-]
-```
-
-为了App安全性，必须使用相同的密钥签名的App才可以设置为一个公用组，否则Debug模式下会抛出异常，Release模式下会输出 error 信息。
-
-
-#### 4、分别在应用的 Application 的 onCreate 和 onTerminate 方法中添加开始支持多进程和结束多进程
-```
-public class BusApplication extends Application {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        ElegantBus.setDebug(true);// 可以打开日志开关
-        ElegantBusX.supportMultiProcess(this);
-    }
-
-    @Override
-    public void onTerminate() {
-        ElegantBusX.stopSupportMultiProcess();
-        super.onTerminate();
-    }
-}
-```
-
-##### 以上几步就完成了使用 ElegantBus 的全部配置，下面进入使用环节
-
-### （二）ElegantBus 使用说明
-#### 1、 发送事件
-最简单方式就是直接一句
-```
-ElegantBus.getDefault("EventA").post(new Object());
-ElegantBus.getDefault("EventA").post("eventA");
-ElegantBus.getDefault("EventA").post(888888);
-```
-可以在任何线程发送都是OK的，考虑大部分是没有跨进程需求的，所以这里默认，这种最简单的方式，这个事件 `EventA` 是不支持跨进程的。
-如果要进行跨进程可以使用重载函数进行设置，重载函数如下：
-```
-ElegantBus.getDefault(String group, String event, Class<T> type, boolean multiProcess);
-```
-
-#### 2、 接收事件
-接收事件也很简单：
-+ 常规事件
-```
-ElegantBus.getDefault("EventA").observe(this, new ObserverWrapper<Object>() {
-            @Override
-            public void onChanged(final Object value) {
-                ElegantLog.d(value.toString());
-            }
-        });
-```
-+ 普通事件的粘性事件
-```
-ElegantBus.getDefault("EventA").observeSticky(this, new ObserverWrapper<Object>() {
-            @Override
-            public void onChanged(final Object value) {
-                ElegantLog.d(value.toString());
-            }
-        });
-```
-+ 常驻事件
-```
-ObserverWrapper<Object> foreverObserverWrapper;
-ElegantBus.getDefault("EventA").observeForever(foreverObserverWrapper = new ObserverWrapper<Object>() {
-            @Override
-            public void onChanged(final Object value) {
-                ElegantLog.d(value.toString());
-            }
-        });
-// 常驻事件要自己取消注册，避免内存泄露
-ElegantBus.getDefault("EventA").removeObserver(foreverObserverWrapper);		
-```
-+ 其实普通事件和常驻事件都支持粘性事件
-
-只要创建 ObserverWrapper 时设置 sticky = true 就可以；
-ElegantBus 提供了默认构造函数如下：参数true 表示粘性事件
-```
-new ObserverWrapper<Object>(true) {
-		@Override
-		public void onChanged(Object value) {}
-   })
-```
-
-##### 以上简单的使用就介绍完毕了
-### 高级特性
-+ 可以发现，上面的方式，接收的数据类型是 Object 的，因此，只要是同名的事件，无论发送的是什么类型，观察者都可以接收到。
-为了对事件进行统一管理，防止事件冲突，事件大小写等拼写错误带来的问题，个人不建议直接使用这种方式
-
-**推荐使用事件定义方式**
-#### 事件定义
-+ 先上例子
-```
-@EventGroup(value = "TestScope", active = true)
-public class EventDefine {
-    @Event(description = "eventInt 事件测试", multiProcess = false, active = true)
-    Integer eventInt;
-
-    @Event(description = "eventString 事件测试", multiProcess = true, active = true)
-    String eventString;
-
-    @Event(description = "eventBean 事件测试", multiProcess = true, active = true)
-    JavaBean eventBean;
-}
-```
-##### 说明
-其实事件定义只用到两个注解
-
-1）、@EventGroup 使用在 class 上，定义`事件分组名`，`是否激活`
-
-2）、@Event 使用在变量上，定义具体 `事件描述`，`是否激活`，`是否支持多进程`
-
-定义完注解后，通过前面导入的注解处理器 annotationProcessor ，ElegantBus 会自动生成以 EventGroup 定义的分组名的事件总线
-例如上面的定义就会生成一个 `TestScopeBus`
-
-然后我们所有地方就可以直接使用这个事件总线进行事件管理。
-
-+ 发送事件
-```
-TestScopeBus.eventInt().post(888);
-TestScopeBus.eventString().post("新字符串");
-TestScopeBus.eventBean().post(new JavaBean());
-```
-
-+ 接收事件
-```
-TestScopeBus.eventInt().observe(owner, new ObserverWrapper<Integer>() {
-	@Override
-	public void onChanged(final Integer value) {
-		...
-	}
-});
-```
-
-####
-更多信息请移步至 [ElegantBus](https://github.com/codyer/ElegantBus)，欢迎 Star 和提交 Issue
-
-为了 ElegantBus 更好的为大家提供服务，更好的兼容性，我特意做了很多场景的测试，可能会有覆盖不到的，如果遇到问题，欢迎留言评论
-
-#### 测试场景分析
-
-##### 按照事件类型划分，预期结果:
-```
-事件类型:{
-     Normal:{
-        注册时:之前的事件不会接收到,
-        注册之后:{
-            激活:立即收到,
-            非激活:变成激活后收到
-        }
-     },
-     Sticky:{
-        注册时:会接收到最后一次事件,
-        注册之后:{
-            激活:立即收到,
-            非激活:变成激活后收到
-        }
-     },
-     Forever:{
-        注册时:之前的事件不会接收到,
-        注册之后:立即收到
-     }
-}
-```
-##### 不同场景预期结果：
-```
-场景覆盖:{
-    单一进程:{
-        不需要引入IPC包，直接按事件类型测试OK,
-    },
-    多进程:{// 导入IPC包，APK1、APK2
-        单一App:{
-           设置（isMultiApp = false）:直接按事件类型测试OK,
-        },
-        多App:{
-             同一个包服务下:{
-                 同时打开跨App支持:{
-                     按事件类型测试OK
-                 },
-                 只有一方打开:{
-                     本App内正常，跨App无法执行
-                 },
-             },
-             非一个包服务下:不会接收到
-         }
-    }
-}
-```
-
-#### LifeCycle 参考图：
-
-![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gfxmophq4dj315r0g7jt7.jpg)
+#### 使用说明以及更多信息请移步至 [ElegantBus](https://github.com/codyer/ElegantBus) 
+- 欢迎 Star 和提交 Issue

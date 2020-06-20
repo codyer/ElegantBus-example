@@ -88,7 +88,7 @@ class TestUtil {
             }
         });
         ObserverWrapper<JavaBean> observerWrapper;
-        TestScopeBus.eventBean().observeForever(observerWrapper = new ObserverWrapper<JavaBean>(true) {
+        TestScopeBus.eventBean().observeForever(observerWrapper = new ObserverWrapper<JavaBean>() {
             @Override
             public void onChanged(final JavaBean value) {
                 log(Forever, value, page);

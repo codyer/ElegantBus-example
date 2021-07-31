@@ -146,4 +146,5 @@ ElegantBus | :x: | :x: | :white_check_mark: | :white_check_mark: | :white_check_
 
 
 #### 使用说明以及更多信息请移步至 [ElegantBus](https://github.com/codyer/ElegantBus) 
+- 如需下载代码运行，注意替换gradle.properties 里面的对应字段 ：LOCAL_REPOSITORY=file://E://local-maven
 - 欢迎 Star 和提交 Issue

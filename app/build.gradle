@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 // 本地调试
-def isLocal = true
+def isLocal = false
 def localVersion = "2.0.3"
 def version = "2.1.0"
 

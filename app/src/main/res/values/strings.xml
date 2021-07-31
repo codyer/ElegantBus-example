@@ -4,6 +4,8 @@
     <string name="send_integer">发送 Integer 事件(跨进程未打开)</string>
     <string name="send_string">发送 String 事件</string>
     <string name="send_bean">发送 Bean 事件</string>
+    <string name="send_list">发送 list 事件</string>
+    <string name="send_map">发送 map 事件</string>
     <string name="send_default">发送 默认方式 事件</string>
     <string name="send">发送</string>
     <string name="observe">注册Sticky</string>

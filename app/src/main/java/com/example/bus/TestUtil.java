@@ -7,6 +7,9 @@ import android.util.Log;
 
 import com.example.bus.cody.TestScopeBus;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
@@ -29,6 +32,29 @@ class TestUtil {
 
     static void postBean() {
         TestScopeBus.eventBean().post(new JavaBean("测试", count++));
+        ArrayList<String> list = new ArrayList<>();
+        list.add("测试"+count++);
+        list.add("测试"+count++);
+        TestScopeBus.eventList().post(list);
+        HashMap<String, List<String>> map = new HashMap<>();
+        map.put("测试"+count++,list);
+        TestScopeBus.eventMap().post(map);
+    }
+
+    static void postList() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("测试"+count++);
+        list.add("测试"+count++);
+        TestScopeBus.eventList().post(list);
+    }
+
+    static void postMap() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("测试"+count++);
+        list.add("测试"+count++);
+        HashMap<String, List<String>> map = new HashMap<>();
+        map.put("测试"+count++,list);
+        TestScopeBus.eventMap().post(map);
     }
 
     static ObserverWrapper<Integer> testInt(LifecycleOwner owner, String page) {
@@ -100,6 +126,52 @@ class TestUtil {
         return observerWrapper;
     }
 
+    static ObserverWrapper<List<String>> testList(LifecycleOwner owner, String page) {
+        TestScopeBus.eventList().observe(owner, new ObserverWrapper<List<String>>() {
+            @Override
+            public void onChanged(final List<String> value) {
+                log(Normal, value, page);
+            }
+        });
+        TestScopeBus.eventList().observe(owner, new ObserverWrapper<List<String>>(true) {
+            @Override
+            public void onChanged(final List<String> value) {
+                log(Sticky, value, page);
+            }
+        });
+        ObserverWrapper<List<String>> observerWrapper;
+        TestScopeBus.eventList().observeForever(observerWrapper = new ObserverWrapper<List<String>>() {
+            @Override
+            public void onChanged(final List<String> value) {
+                log(Forever, value, page);
+            }
+        });
+        return observerWrapper;
+    }
+
+    static ObserverWrapper<Map<String,List<String>>> testMap(LifecycleOwner owner, String page) {
+        TestScopeBus.eventMap().observe(owner, new ObserverWrapper<Map<String,List<String>>>() {
+            @Override
+            public void onChanged(final Map<String,List<String>> value) {
+                log(Normal, value, page);
+            }
+        });
+        TestScopeBus.eventMap().observe(owner, new ObserverWrapper<Map<String,List<String>>>(true) {
+            @Override
+            public void onChanged(final Map<String,List<String>> value) {
+                log(Sticky, value, page);
+            }
+        });
+        ObserverWrapper<Map<String,List<String>>> observerWrapper;
+        TestScopeBus.eventMap().observeForever(observerWrapper = new ObserverWrapper<Map<String,List<String>>>() {
+            @Override
+            public void onChanged(final Map<String,List<String>> value) {
+                log(Forever, value, page);
+            }
+        });
+        return observerWrapper;
+    }
+
     static void open(Context context, Class<?> clz) {
         Intent intent = new Intent(context, clz);
         context.startActivity(intent);
@@ -115,6 +187,14 @@ class TestUtil {
 
     static void removeBean(ObserverWrapper<JavaBean> observerWrapper) {
         TestScopeBus.eventBean().removeObserver(observerWrapper);
+    }
+
+    static void removeList(ObserverWrapper<List<String>> observerWrapper) {
+        TestScopeBus.eventList().removeObserver(observerWrapper);
+    }
+
+    static void removeMap(ObserverWrapper<Map<String,List<String>>> observerWrapper) {
+        TestScopeBus.eventMap().removeObserver(observerWrapper);
     }
 
     private static void log(String type, Object value, String page) {

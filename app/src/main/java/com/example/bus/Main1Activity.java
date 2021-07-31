@@ -8,21 +8,19 @@ import cody.bus.ElegantBus;
 import cody.bus.ElegantLog;
 import cody.bus.ObserverWrapper;
 
-public class Main1Activity extends AppCompatActivity {
+public class Main1Activity extends BaseActivity {
 
-    private ObserverWrapper<Integer> observerWrapperInt;
-    private ObserverWrapper<String> observerWrapperString;
-    private ObserverWrapper<JavaBean> observerWrapperBean;
+    public String getPage() {
+        return "页面1";
+    }
+
+    public Class<?> getNextPage() {
+        return Main2Activity.class;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_page);
-        ((TextView) findViewById(R.id.page)).setText("页面1");
-        findViewById(R.id.open).setOnClickListener(view -> TestUtil.open(this, Main2Activity.class));
-        findViewById(R.id.testInt).setOnClickListener(view -> TestUtil.postInt());
-        findViewById(R.id.testString).setOnClickListener(view -> TestUtil.postString());
-        findViewById(R.id.testBean).setOnClickListener(view -> TestUtil.postBean());
         findViewById(R.id.testDefault).setOnClickListener(view ->
                 {
                     ElegantBus.getDefault("EventA").post(new JavaBean("eventA", 10));
@@ -30,9 +28,6 @@ public class Main1Activity extends AppCompatActivity {
                     ElegantBus.getDefault("EventA").post(888888);
                 }
         );
-        observerWrapperInt = TestUtil.testInt(this, "页面1");
-        observerWrapperString = TestUtil.testString(this, "页面1");
-        observerWrapperBean = TestUtil.testBean(this, "页面1");
         ElegantBus.getDefault("EventA").observeSticky(this, new ObserverWrapper<Object>() {
             @Override
             public void onChanged(final Object value) {
@@ -56,13 +51,5 @@ public class Main1Activity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        TestUtil.removeInt(observerWrapperInt);
-        TestUtil.removeString(observerWrapperString);
-        TestUtil.removeBean(observerWrapperBean);
-        super.onDestroy();
     }
 }

@@ -5,4 +5,6 @@
     <string name="send_string">发送 String 事件</string>
     <string name="send_bean">发送 Bean 事件</string>
     <string name="send_default">发送 默认方式 事件</string>
+    <string name="send">发送</string>
+    <string name="observe">注册Sticky</string>
 </resources>

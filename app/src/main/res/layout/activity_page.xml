@@ -9,10 +9,27 @@
         android:id="@+id/page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="60dp"
+        android:gravity="center"
+        android:padding="20dp"
         android:text="@string/app_name"
         android:textColor="@color/colorPrimary"
-        android:textSize="60sp" />
+        android:textSize="20sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/log"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
+
+    </ScrollView>
 
     <Button
         android:id="@+id/open"
@@ -37,16 +54,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_bean" />
+
     <Button
         android:id="@+id/testList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_list" />
+
+    <Button
+        android:id="@+id/testResetSticky"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_sticky" />
+
     <Button
         android:id="@+id/testMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_map" />
+
     <Button
         android:id="@+id/testDefault"
         android:layout_width="match_parent"

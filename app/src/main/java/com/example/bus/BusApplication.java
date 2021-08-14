@@ -11,6 +11,7 @@ public class BusApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        TestUtil.log("创建进程：" + ElegantBus.getProcessName());
         ElegantBus.setDebug(true);
         ElegantBusX.supportMultiProcess(this);
     }

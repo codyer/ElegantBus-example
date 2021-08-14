@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
+import cody.bus.ElegantBus;
 import cody.bus.ObserverWrapper;
 
 
@@ -19,7 +20,7 @@ public class BaseActivity extends AppCompatActivity {
     private ObserverWrapper<Map<String, List<String>>> observerWrapperMap;
 
     public String getPage() {
-        return "页面4";
+        return "页面";
     }
 
     public Class<?> getNextPage() {
@@ -30,18 +31,21 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page);
-        ((TextView) findViewById(R.id.page)).setText(getPage());
+        TestUtil.log("进入页面：" + getPage());
+        ((TextView) findViewById(R.id.page)).setText(String.format(getString(R.string.title_str), hashCode(), ElegantBus.getProcessName(), getPage()));
         findViewById(R.id.open).setOnClickListener(view -> TestUtil.open(this, getNextPage()));
         findViewById(R.id.testInt).setOnClickListener(view -> TestUtil.postInt());
         findViewById(R.id.testString).setOnClickListener(view -> TestUtil.postString());
         findViewById(R.id.testBean).setOnClickListener(view -> TestUtil.postBean());
+        findViewById(R.id.testResetSticky).setOnClickListener(view -> TestUtil.resetSticky());
         findViewById(R.id.testList).setOnClickListener(view -> TestUtil.postList());
         findViewById(R.id.testMap).setOnClickListener(view -> TestUtil.postMap());
-        observerWrapperInt = TestUtil.testInt(this, getPage());
-        observerWrapperString = TestUtil.testString(this, getPage());
-        observerWrapperBean = TestUtil.testBean(this, getPage());
-        observerWrapperList = TestUtil.testList(this, getPage());
-        observerWrapperMap = TestUtil.testMap(this, getPage());
+        TextView log = findViewById(R.id.log);
+        observerWrapperInt = TestUtil.testInt(this, getPage(), log);
+        observerWrapperString = TestUtil.testString(this, getPage(), log);
+        observerWrapperBean = TestUtil.testBean(this, getPage(), log);
+        observerWrapperList = TestUtil.testList(this, getPage(), log);
+        observerWrapperMap = TestUtil.testMap(this, getPage(), log);
     }
 
     @Override

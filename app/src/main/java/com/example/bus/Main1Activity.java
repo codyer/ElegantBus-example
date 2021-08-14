@@ -11,7 +11,7 @@ import cody.bus.ObserverWrapper;
 public class Main1Activity extends BaseActivity {
 
     public String getPage() {
-        return "页面1";
+        return super.getPage() + "1";
     }
 
     public Class<?> getNextPage() {

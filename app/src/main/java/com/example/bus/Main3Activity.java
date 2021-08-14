@@ -3,7 +3,7 @@ package com.example.bus;
 public class Main3Activity extends BaseActivity {
     @Override
     public String getPage() {
-        return "页面3";
+        return super.getPage() + "3";
     }
 
     @Override

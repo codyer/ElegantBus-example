@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 
 // 本地调试
 def isLocal = false
-def localVersion = "2.2.2"
-def version = "2.2.2"
+def localVersion = "2.2.3"
+def version = "2.2.3"
 
 android {
 
@@ -39,7 +39,7 @@ android {
         manifestPlaceholders = [
                 APP_NAME               : "IPC-default",
                 BUS_SUPPORT_MULTI_APP  : true,
-                BUS_MAIN_APPLICATION_ID: "com.example.bus"
+                BUS_MAIN_APPLICATION_ID: "default"
         ]
     }
 
@@ -106,7 +106,16 @@ android {
             manifestPlaceholders = [
                     APP_NAME               : "IPC-4-id-abc",
                     BUS_SUPPORT_MULTI_APP  : true,
-                    BUS_MAIN_APPLICATION_ID: "com.example.bus.abc"
+                    BUS_MAIN_APPLICATION_ID: "abc"
+            ]
+        }
+        app5 {
+            initWith(debug)
+            applicationIdSuffix ".app5"
+            manifestPlaceholders = [
+                    APP_NAME               : "IPC-5-id-key1-true",
+                    BUS_SUPPORT_MULTI_APP  : true,
+                    BUS_MAIN_APPLICATION_ID: "com.example.bus"
             ]
         }
     }
@@ -124,7 +133,8 @@ dependencies {
     if (isLocal) {
 //        implementation "com.cody.local.bus:bus-core:$localVersion"// 不需要跨进程时使用
 //        implementation "com.cody.local.bus:bus-ipc-aidl:$localVersion" // 跨进程使用
-        implementation "com.cody.local.bus:bus-ipc-messenger:$localVersion" // 跨进程使用
+        implementation "com.cody.local.bus:bus-ipc-binder:$localVersion" // 跨进程使用
+//        implementation "com.cody.local.bus:bus-ipc-messenger:$localVersion" // 跨进程使用
         annotationProcessor "com.cody.local.bus:bus-compiler:$localVersion" // 需要事件自动管理使用
     } else {
 //        implementation "com.github.codyer.ElegantBus:core:$version" // 不需要跨进程时使用

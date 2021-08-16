@@ -55,6 +55,12 @@ class TestUtil {
         TestScopeBus.eventMap().post(map);
     }
 
+    static void postDefault() {
+        ElegantBus.getDefault("EventA").post(new JavaBean("eventA", 10));
+        ElegantBus.getDefault("EventA").post("eventA");
+        ElegantBus.getDefault("EventA").post(888888);
+    }
+
     static ObserverWrapper<Integer> testInt(LifecycleOwner owner, String page, final TextView log) {
         TestScopeBus.eventInt().observe(owner, new ObserverWrapper<Integer>() {
             @Override
@@ -170,6 +176,29 @@ class TestUtil {
         return observerWrapper;
     }
 
+    static ObserverWrapper<Object> testDefault(LifecycleOwner owner, String page, TextView log) {
+        ElegantBus.getDefault("EventA").observe(owner, new ObserverWrapper<Object>() {
+            @Override
+            public void onChanged(final Object value) {
+                log(Normal, value, page, log);
+            }
+        });
+        ElegantBus.getDefault("EventA").observeSticky(owner, new ObserverWrapper<Object>() {
+            @Override
+            public void onChanged(final Object value) {
+                log(Sticky, value, page, log);
+            }
+        });
+        ObserverWrapper<Object> observerWrapper;
+        ElegantBus.getDefault("EventA").observeForever(observerWrapper = new ObserverWrapper<Object>() {
+            @Override
+            public void onChanged(final Object value) {
+                log(Forever, value, page, log);
+            }
+        });
+        return observerWrapper;
+    }
+
     static void open(Context context, Class<?> clz) {
         Intent intent = new Intent(context, clz);
         context.startActivity(intent);
@@ -195,6 +224,18 @@ class TestUtil {
         TestScopeBus.eventMap().removeObserver(observerWrapper);
     }
 
+    public static void removeDefault(final ObserverWrapper<Object> observerWrapper) {
+        ElegantBus.getDefault("EventA").removeObserver(observerWrapper);
+    }
+
+    public static void resetSticky() {
+        TestScopeBus.eventInt().resetSticky();
+        TestScopeBus.eventMap().resetSticky();
+        TestScopeBus.eventList().resetSticky();
+        TestScopeBus.eventBean().resetSticky();
+        TestScopeBus.eventString().resetSticky();
+    }
+
     private static void log(String type, Object value, String page, final TextView log) {
         String out = ElegantBus.getProcessName() + ":" + page + ":收到 " + type + " 消息(" + value.getClass().getCanonicalName() + "):" + value;
         if (log != null) {
@@ -209,13 +250,5 @@ class TestUtil {
 
     public static void log(String log) {
         Log.d("TestUtil_ElegantBus", log);
-    }
-
-    public static void resetSticky() {
-        TestScopeBus.eventInt().resetSticky();
-        TestScopeBus.eventMap().resetSticky();
-        TestScopeBus.eventList().resetSticky();
-        TestScopeBus.eventBean().resetSticky();
-        TestScopeBus.eventString().resetSticky();
     }
 }

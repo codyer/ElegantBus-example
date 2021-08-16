@@ -18,6 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     private ObserverWrapper<JavaBean> observerWrapperBean;
     private ObserverWrapper<List<String>> observerWrapperList;
     private ObserverWrapper<Map<String, List<String>>> observerWrapperMap;
+    private ObserverWrapper<Object> observerWrapperDefault;
 
     public String getPage() {
         return "页面";
@@ -40,12 +41,15 @@ public class BaseActivity extends AppCompatActivity {
         findViewById(R.id.testResetSticky).setOnClickListener(view -> TestUtil.resetSticky());
         findViewById(R.id.testList).setOnClickListener(view -> TestUtil.postList());
         findViewById(R.id.testMap).setOnClickListener(view -> TestUtil.postMap());
+        findViewById(R.id.testDefault).setOnClickListener(view -> TestUtil.postDefault());
+
         TextView log = findViewById(R.id.log);
         observerWrapperInt = TestUtil.testInt(this, getPage(), log);
         observerWrapperString = TestUtil.testString(this, getPage(), log);
         observerWrapperBean = TestUtil.testBean(this, getPage(), log);
         observerWrapperList = TestUtil.testList(this, getPage(), log);
         observerWrapperMap = TestUtil.testMap(this, getPage(), log);
+        observerWrapperDefault = TestUtil.testDefault(this, getPage(), log);
     }
 
     @Override
@@ -55,6 +59,7 @@ public class BaseActivity extends AppCompatActivity {
         TestUtil.removeBean(observerWrapperBean);
         TestUtil.removeList(observerWrapperList);
         TestUtil.removeMap(observerWrapperMap);
+        TestUtil.removeDefault(observerWrapperDefault);
         super.onDestroy();
     }
 }

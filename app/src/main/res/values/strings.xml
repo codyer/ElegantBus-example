@@ -12,4 +12,12 @@
     <string name="send">发送</string>
     <string name="observe">注册Sticky</string>
     <string name="title_str">%d\n%s\n%s</string>
+    <string name="observePriority1">注册优先级1</string>
+    <string name="observeStickyPriority2">注册Sticky优先级2</string>
+    <string name="observePriority3">注册优先级3</string>
+    <string name="observePriorityF3">注册优先级-3</string>
+    <string name="priority">优先级测试</string>
+    <string name="observePriority2Forever">注册优先级2永久</string>
+    <string name="removePriority2Forever">删除优先级2永久</string>
+    <string name="removeOwner">删除当前所有观察</string>
 </resources>

@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 
 // 本地调试
 def isLocal = false
-def localVersion = "2.2.3"
-def version = "2.2.3"
+def localVersion = "2.2.4"
+def version = "2.2.4"
 
 android {
 
@@ -129,6 +129,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation project(path: ':business')
 
     if (isLocal) {
 //        implementation "com.cody.local.bus:bus-core:$localVersion"// 不需要跨进程时使用

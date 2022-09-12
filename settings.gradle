@@ -17,6 +17,10 @@ dependencyResolutionManagement {
     repositories {
         // 本地仓库
         mavenLocal()
+        maven {
+            url 'https://jitpack.io'
+            allowInsecureProtocol = true
+        }
         // 当上传到远端仓库
 //            maven {
 //                url("")

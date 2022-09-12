@@ -35,9 +35,9 @@ android {
 }
 
 dependencies {
-
-//        implementation "com.github.codyer.ElegantBus:core:$rootProject.ext.elegantBusVersion" // 不需要跨进程时使用
-//        implementation "com.github.codyer.ElegantBus:ipc-aidl:$rootProject.ext.elegantBusVersion" // 跨进程使用
-    implementation "com.github.codyer.ElegantBus:ipc-messenger:$rootProject.ext.elegantBusVersion" // 跨进程使用
-    annotationProcessor "com.github.codyer.ElegantBus:compiler:$rootProject.ext.elegantBusVersion"// 需要事件自动管理使用
+//  implementation "${rootProject.ext.elegantBusGroupId}:core:${rootProject.ext.elegantBusVersion}" // 不需要跨进程时使用
+//  implementation "${rootProject.ext.elegantBusGroupId}:ipc-aidl:${rootProject.ext.elegantBusVersion}" // 跨进程使用
+    implementation "${rootProject.ext.elegantBusGroupId}:ipc-messenger:${rootProject.ext.elegantBusVersion}"
+    // 跨进程使用
+    annotationProcessor "${rootProject.ext.elegantBusGroupId}:compiler:${rootProject.ext.elegantBusVersion}"
 }

@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.library'
+}
+
+
+android {
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        app1 {
+        }
+        app2 {
+        }
+        app3 {
+        }
+        app4 {
+        }
+        app5 {
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+//        implementation "com.github.codyer.ElegantBus:core:$rootProject.ext.elegantBusVersion" // 不需要跨进程时使用
+//        implementation "com.github.codyer.ElegantBus:ipc-aidl:$rootProject.ext.elegantBusVersion" // 跨进程使用
+    implementation "com.github.codyer.ElegantBus:ipc-messenger:$rootProject.ext.elegantBusVersion" // 跨进程使用
+    annotationProcessor "com.github.codyer.ElegantBus:compiler:$rootProject.ext.elegantBusVersion"// 需要事件自动管理使用
+}

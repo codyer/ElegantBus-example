@@ -1,2 +1,35 @@
-rootProject.name='ElegantBus-example'
+pluginManagement {
+    repositories {
+        // 本地仓库
+        mavenLocal()
+        maven {
+            url 'https://jitpack.io'
+            allowInsecureProtocol = true
+        }
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        // 本地仓库
+        mavenLocal()
+        // 当上传到远端仓库
+//            maven {
+//                url("")
+//                credentials {
+//                    username = ""
+//                    password = ""
+//                }
+//          }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'ElegantBus-example'
 include ':app'
+include ':business'

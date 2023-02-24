@@ -5,13 +5,13 @@ plugins {
 }
 
 ext {
-    minSdkVersion = 21
+    minSdkVersion = 26
     targetSdkVersion = 32
     compileSdkVersion = 32
-    elegantBusVersion = "3.0.0"
-//  elegantBusGroupId = "com.codyer.ElegantBus"//本地仓库
+    elegantBusVersion = "3.2.0"
+    elegantBusGroupId = "com.codyer.ElegantBus"//本地仓库
 //  elegantBusGroupId = "com.github.codyer.ElegantBus"//GitHub
-    elegantBusGroupId = "com.gitee.codyer.ElegantBus"//码云仓库
+//    elegantBusGroupId = "com.gitee.codyer.ElegantBus"//码云仓库
 }
 
 task clean(type: Delete) {

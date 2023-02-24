@@ -35,9 +35,22 @@ android {
 }
 
 dependencies {
-//  implementation "${rootProject.ext.elegantBusGroupId}:core:${rootProject.ext.elegantBusVersion}" // 不需要跨进程时使用
-//  implementation "${rootProject.ext.elegantBusGroupId}:ipc-aidl:${rootProject.ext.elegantBusVersion}" // 跨进程使用
-    implementation "${rootProject.ext.elegantBusGroupId}:ipc-messenger:${rootProject.ext.elegantBusVersion}"
+//    def ipc = "provider"
+//    def ipc = "messenger"
+    def ipc = "aidl"
+//    def ipc = "binder"
+//  api "${rootProject.ext.elegantBusGroupId}:core:${rootProject.ext.elegantBusVersion}" // 不需要跨进程时使用
+//  api "${rootProject.ext.elegantBusGroupId}:ipc-aidl:${rootProject.ext.elegantBusVersion}" // 跨进程使用
+//    api "${rootProject.ext.elegantBusGroupId}:ipc-binder:${rootProject.ext.elegantBusVersion}"
+    // 跨进程使用
+//  api "${rootProject.ext.elegantBusGroupId}:ipc-messenger:${rootProject.ext.elegantBusVersion}"
+    debugApi "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}:${rootProject.ext.elegantBusVersion}"
+    app1Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}_sub:${rootProject.ext.elegantBusVersion}"
+    app2Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}_sub:${rootProject.ext.elegantBusVersion}"
+    app3Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}_sub:${rootProject.ext.elegantBusVersion}"
+    app4Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}_sub:${rootProject.ext.elegantBusVersion}"
+    app5Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}_sub:${rootProject.ext.elegantBusVersion}"
+//    annotationProcessor "${rootProject.ext.elegantBusGroupId}:ipc-contentprovider:${rootProject.ext.elegantBusVersion}"
     // 跨进程使用
     annotationProcessor "${rootProject.ext.elegantBusGroupId}:compiler:${rootProject.ext.elegantBusVersion}"
 }

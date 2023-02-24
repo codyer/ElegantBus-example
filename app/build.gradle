@@ -127,7 +127,8 @@ dependencies {
     implementation project(path: ':business')
 //  implementation "${rootProject.ext.elegantBusGroupId}:core:${rootProject.ext.elegantBusVersion}" // 不需要跨进程时使用
 //  implementation "${rootProject.ext.elegantBusGroupId}:ipc-aidl:${rootProject.ext.elegantBusVersion}" // 跨进程使用
-    implementation "${rootProject.ext.elegantBusGroupId}:ipc-messenger:${rootProject.ext.elegantBusVersion}"
+//  implementation "${rootProject.ext.elegantBusGroupId}:ipc-binder:${rootProject.ext.elegantBusVersion}" // 跨进程使用
+//    implementation "${rootProject.ext.elegantBusGroupId}:ipc-messenger:${rootProject.ext.elegantBusVersion}"
     // 跨进程使用
     annotationProcessor "${rootProject.ext.elegantBusGroupId}:compiler:${rootProject.ext.elegantBusVersion}"
 }

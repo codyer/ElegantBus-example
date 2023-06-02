@@ -45,6 +45,7 @@ dependencies {
     // 跨进程使用
 //  api "${rootProject.ext.elegantBusGroupId}:ipc-messenger:${rootProject.ext.elegantBusVersion}"
     debugApi "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}:${rootProject.ext.elegantBusVersion}"
+//    app1Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}:${rootProject.ext.elegantBusVersion}"
     app1Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}_sub:${rootProject.ext.elegantBusVersion}"
     app2Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}_sub:${rootProject.ext.elegantBusVersion}"
     app3Api "${rootProject.ext.elegantBusGroupId}:ipc-${ipc}_sub:${rootProject.ext.elegantBusVersion}"

@@ -28,7 +28,7 @@ android {
         targetSdk rootProject.ext.targetSdkVersion
         consumerProguardFiles "consumer-rules.pro"
         versionCode 1
-        versionName "1.0"
+        versionName rootProject.ext.elegantBusVersion
 // 读取设置的签名文件
         signingConfig signingConfigs.kestore1
         manifestPlaceholders = [
@@ -85,6 +85,7 @@ android {
             ]
         }
         app3 {
+            //签名不同无法正常运行
             initWith(debug)
             applicationIdSuffix ".app3"
             // 读取设置的签名文件
@@ -96,6 +97,7 @@ android {
             ]
         }
         app4 {
+            //无法找到host app，运行失败
             initWith(debug)
             applicationIdSuffix ".app4"
             manifestPlaceholders = [
@@ -105,6 +107,7 @@ android {
             ]
         }
         app5 {
+            // 可以正常运行
             initWith(debug)
             applicationIdSuffix ".app5"
             manifestPlaceholders = [

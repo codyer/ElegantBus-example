@@ -35,9 +35,9 @@ android {
 }
 
 dependencies {
-    def ipc = "provider"
+//    def ipc = "provider"
 //    def ipc = "messenger"
-//    def ipc = "aidl"
+    def ipc = "aidl"
 //    def ipc = "binder"
 //  api "${rootProject.ext.elegantBusGroupId}:core:${rootProject.ext.elegantBusVersion}" // 不需要跨进程时使用
 //  api "${rootProject.ext.elegantBusGroupId}:ipc-aidl:${rootProject.ext.elegantBusVersion}" // 跨进程使用

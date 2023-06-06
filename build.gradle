@@ -9,8 +9,8 @@ ext {
     targetSdkVersion = 32
     compileSdkVersion = 32
     elegantBusVersion = "3.3.2"
-    elegantBusGroupId = "com.codyer.ElegantBus"//本地仓库
-//  elegantBusGroupId = "com.github.codyer.ElegantBus"//GitHub
+//    elegantBusGroupId = "com.codyer.ElegantBus"//本地仓库
+  elegantBusGroupId = "com.github.codyer.ElegantBus"//GitHub
 //    elegantBusGroupId = "com.gitee.codyer.ElegantBus"//码云仓库
 }
 
